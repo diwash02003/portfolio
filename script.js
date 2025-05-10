@@ -29,8 +29,8 @@ function setTheme(theme) {
 }
 
 // Check for saved theme preference
-const savedTheme = localStorage.getItem('theme') || 
-                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+const savedTheme = localStorage.getItem('theme') ||
+  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 setTheme(savedTheme);
 
 // Theme toggle event listener
@@ -43,8 +43,8 @@ themeToggleBtn.addEventListener('click', () => {
 // Mobile Menu Toggle
 menuToggle.addEventListener('click', () => {
   navMobile.classList.toggle('active');
-  menuToggle.innerHTML = navMobile.classList.contains('active') 
-    ? '<i class="fas fa-times"></i>' 
+  menuToggle.innerHTML = navMobile.classList.contains('active')
+    ? '<i class="fas fa-times"></i>'
     : '<i class="fas fa-bars"></i>';
 });
 
@@ -62,7 +62,7 @@ tabs.forEach(tab => {
     // Remove active class from all tabs and contents
     tabs.forEach(t => t.classList.remove('active'));
     tabContents.forEach(content => content.classList.remove('active'));
-    
+
     // Add active class to clicked tab and corresponding content
     tab.classList.add('active');
     const tabId = tab.getAttribute('data-tab');
@@ -75,12 +75,12 @@ filterBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     // Remove active class from all filter buttons
     filterBtns.forEach(b => b.classList.remove('active'));
-    
+
     // Add active class to clicked button
     btn.classList.add('active');
-    
+
     const filter = btn.getAttribute('data-filter');
-    
+
     // Show/hide projects based on filter
     projectCards.forEach(card => {
       if (filter === 'all' || card.getAttribute('data-category') === filter) {
@@ -99,15 +99,15 @@ projectCards.forEach(card => {
     const description = card.querySelector('p').textContent;
     const tags = card.querySelectorAll('.project-tag');
     const badge = card.querySelector('.project-badge').textContent;
-    
+
     // Set modal content
     document.getElementById('modal-project-title').textContent = title;
-    document.getElementById('modal-project-description').textContent = 
-      "Detailed description of " + title + ": " + description + 
+    document.getElementById('modal-project-description').textContent =
+      "Detailed description of " + title + ": " + description +
       " This project showcases my skills in web development and problem-solving. " +
       "It was developed using modern technologies and best practices to create a " +
       "robust and user-friendly solution.";
-    
+
     // Clear and add tags
     const tagsContainer = document.getElementById('modal-project-tags');
     tagsContainer.innerHTML = '';
@@ -117,7 +117,7 @@ projectCards.forEach(card => {
       tagSpan.textContent = tag.textContent;
       tagsContainer.appendChild(tagSpan);
     });
-    
+
     // Show modal
     projectModal.style.display = 'flex';
   });
@@ -138,27 +138,27 @@ window.addEventListener('click', (e) => {
 // Contact form submission
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   const formData = new FormData(contactForm);
   const name = formData.get('name');
   const email = formData.get('email');
   const subject = formData.get('subject');
   const message = formData.get('message');
-  
+
   // Simulate form submission
   const submitBtn = contactForm.querySelector('button[type="submit"]');
   const originalBtnText = submitBtn.innerHTML;
-  
+
   submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
   submitBtn.disabled = true;
-  
+
   setTimeout(() => {
     // Reset form
     contactForm.reset();
-    
+
     // Show success message
     submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-    
+
     // Reset button after 3 seconds
     setTimeout(() => {
       submitBtn.innerHTML = originalBtnText;
@@ -171,27 +171,27 @@ contactForm.addEventListener('submit', (e) => {
 function createFloatingIcons() {
   const icons = ['fas fa-graduation-cap', 'fas fa-book-open', 'fas fa-code'];
   const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)'];
-  
+
   for (let i = 0; i < 15; i++) {
     const icon = document.createElement('div');
     icon.className = 'floating-icon';
-    
+
     const iconIndex = i % 3;
     const size = Math.random() * 60 + 20;
-    
+
     icon.style.width = `${size}px`;
     icon.style.height = `${size}px`;
     icon.style.left = `${Math.random() * 100}%`;
     icon.style.top = `${Math.random() * 100}%`;
     icon.style.backgroundColor = colors[iconIndex];
-    
+
     const iconElement = document.createElement('i');
     iconElement.className = icons[iconIndex];
     iconElement.style.color = 'white';
-    
+
     icon.appendChild(iconElement);
     floatingIconsContainer.appendChild(icon);
-    
+
     // Add animation with random duration
     animateFloatingIcon(icon);
   }
@@ -200,40 +200,40 @@ function createFloatingIcons() {
 // Animate floating icons with slow movement
 function animateFloatingIcon(icon) {
   const speed = 3 + Math.random() * 2; // Slower speed between 3-5 seconds
-  
+
   // Initial position
   const startX = parseFloat(icon.style.left);
   const startY = parseFloat(icon.style.top);
-  
+
   // Random movement range (smaller for slower movement)
   const rangeX = (Math.random() - 0.5) * 10;
   const rangeY = (Math.random() - 0.5) * 10;
-  
+
   let progress = 0;
   let direction = 1;
-  
+
   function moveIcon() {
     progress += 0.005 * direction;
-    
+
     if (progress >= 1) direction = -1;
     if (progress <= 0) direction = 1;
-    
+
     const newX = startX + rangeX * progress;
     const newY = startY + rangeY * progress;
-    
+
     icon.style.left = `${newX}%`;
     icon.style.top = `${newY}%`;
-    
+
     requestAnimationFrame(moveIcon);
   }
-  
+
   moveIcon();
 }
 
 // Initialize AOS (Animate on Scroll)
 let AOS; // Declare AOS variable
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   AOS = window.AOS; // Assign AOS from window object
   AOS.init({
     duration: 800,
@@ -241,17 +241,17 @@ document.addEventListener('DOMContentLoaded', function() {
     once: true,
     mirror: false
   });
-  
+
   // Create floating icons
   createFloatingIcons();
-  
+
   // Show skill details on hover
   skillCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
       const details = card.querySelector('.skill-details');
       details.style.display = 'block';
     });
-    
+
     card.addEventListener('mouseleave', () => {
       const details = card.querySelector('.skill-details');
       details.style.display = 'none';
