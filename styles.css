@@ -1358,3 +1358,40 @@ section {
   object-fit: cover;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+
+.project-content {
+  text-align: center;
+  /* Center the button horizontally within the div */
+  margin-top: 20px;
+  /* Add some space at the top */
+}
+
+.project-details-btn {
+  display: inline-block;
+  margin-top: 15px;
+  /* Space between the button and the content above */
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #007bff;
+  background-color: transparent;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.project-details-btn:hover,
+.project-details-btn:focus {
+  background-color: #007bff;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.project-details-btn:active {
+  transform: scale(0.98);
+}
+
+.project-details-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
