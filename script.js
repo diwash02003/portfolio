@@ -99,6 +99,7 @@ projectCards.forEach(card => {
     const description = card.querySelector('p').textContent;
     const tags = card.querySelectorAll('.project-tag');
     const badge = card.querySelector('.project-badge').textContent;
+    const imageSrc = card.querySelector('img').src; // Get the image source
 
     // Set modal content
     document.getElementById('modal-project-title').textContent = title;
@@ -108,6 +109,9 @@ projectCards.forEach(card => {
       "It was developed using modern technologies and best practices to create a " +
       "robust and user-friendly solution.";
 
+    const imageElement = document.getElementById('modal-project-image');
+    imageElement.src = imageSrc;
+    imageElement.alt = title;
     // Clear and add tags
     const tagsContainer = document.getElementById('modal-project-tags');
     tagsContainer.innerHTML = '';
