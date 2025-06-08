@@ -1,264 +1,608 @@
-// DOM Elements
-const themeToggleBtn = document.getElementById('theme-toggle-btn');
-const menuToggle = document.querySelector('.menu-toggle');
-const navMobile = document.querySelector('.nav-mobile');
-const tabs = document.querySelectorAll('.tab');
-const tabContents = document.querySelectorAll('.tab-content');
-const filterBtns = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.project-card');
-const skillCards = document.querySelectorAll('.skill-card');
-const projectModal = document.getElementById('project-details-modal');
-const closeModalBtn = document.querySelector('.close-button');
-const contactForm = document.getElementById('contactForm');
-const currentYearSpan = document.getElementById('current-year');
-const floatingIconsContainer = document.getElementById('floating-icons');
-
-// Set current year in footer
-currentYearSpan.textContent = new Date().getFullYear();
-
-// Theme Toggle
-function setTheme(theme) {
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark');
-    themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
-  } else {
-    document.documentElement.classList.remove('dark');
-    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
-  }
-  localStorage.setItem('theme', theme);
+// Portfolio Data
+const portfolioData = {
+  projects: [
+    {
+      id: "cv-generator",
+      title: "Modern CV Generator",
+      category: "web",
+      image: "./cv.webp?height=300&width=400",
+      description:
+        "Interactive web application for creating professional resumes and CVs with multiple templates, real-time preview, and export options.",
+      tags: ["React", "TypeScript", "Redux"],
+      features: [
+        "Multiple professional templates",
+        "Drag-and-drop section editor",
+        "Real-time preview functionality",
+        "PDF and Word export options",
+        "Save and load functionality",
+        "Responsive design for all devices",
+      ],
+      technologies: ["React", "TypeScript", "Redux", "HTML5", "CSS3", "PDF.js", "Node.js"],
+      demoLink: "https://cv-generator-demo.netlify.app",
+      githubLink: "https://github.com/diwash02003/cv-generator",
+    },
+    {
+      id: "crm-system",
+      title: "Enterprise CRM System",
+      category: "backend",
+      image: "/crm.webp?height=300&width=400",
+      description:
+        "Comprehensive customer relationship management system developed during internship at mSOft International with advanced features.",
+      tags: ["Spring Boot", "Thymeleaf", "MySQL"],
+      features: [
+        "Customer and lead management",
+        "Sales pipeline tracking",
+        "Advanced reporting and analytics",
+        "Email integration and automation",
+        "User role and permission management",
+        "RESTful API architecture",
+      ],
+      technologies: ["Java", "Spring Boot", "Thymeleaf", "MySQL", "Bootstrap", "jQuery", "Maven"],
+      demoLink: "https://crm-demo.msoft.com",
+      githubLink: "https://github.com/diwash02003/crm-system",
+    },
+    {
+      id: "event-system",
+      title: "College Event Management Portal",
+      category: "web",
+      image: "/young-student-woman-giving-lecture-to-students-at-the-university.webp?height=300&width=400",
+      description:
+        "Full-stack platform for managing college events, registrations, attendee tracking with QR code integration.",
+      tags: ["Java", "Spring Boot", "React"],
+      features: [
+        "Event creation and management",
+        "Online registration and ticketing",
+        "QR code check-in system",
+        "Attendee tracking and analytics",
+        "Email notifications and reminders",
+        "Payment gateway integration",
+      ],
+      technologies: ["Java", "Spring Boot", "React", "MySQL", "Bootstrap", "Chart.js", "PayPal API"],
+      demoLink: "https://event-system-demo.netlify.app",
+      githubLink: "https://github.com/diwash02003/event-management",
+    },
+    {
+      id: "elearning",
+      title: "Interactive E-Learning Platform",
+      category: "web",
+      image: "/online-learning-text.webp?height=300&width=400",
+      description:
+        "Feature-rich online learning platform with course management, progress tracking, interactive quizzes, and certificates.",
+      tags: ["React", "Node.js", "MongoDB"],
+      features: [
+        "Course creation and management",
+        "Video lectures with timestamps",
+        "Interactive quizzes and assignments",
+        "Progress tracking and analytics",
+        "Discussion forums and chat",
+        "Certificate generation",
+      ],
+      technologies: ["React", "Node.js", "Express", "MongoDB", "Socket.io", "AWS S3", "Stripe"],
+      demoLink: "https://elearning-demo.netlify.app",
+      githubLink: "https://github.com/diwash02003/elearning-platform",
+    },
+    {
+      id: "mobile-app",
+      title: "Task Management Mobile App",
+      category: "mobile",
+      image: "/taskmgmt.webp?height=300&width=400",
+      description: "Cross-platform mobile application for task and project management with offline capabilities.",
+      tags: ["React Native", "Firebase", "Redux"],
+      features: [
+        "Cross-platform compatibility",
+        "Offline data synchronization",
+        "Push notifications",
+        "Team collaboration features",
+        "Time tracking and reporting",
+        "Dark mode support",
+      ],
+      technologies: ["React Native", "Firebase", "Redux", "AsyncStorage", "Push Notifications"],
+      demoLink: "https://play.google.com/store/apps/details?id=com.taskmanager",
+      githubLink: "https://github.com/diwash02003/task-manager-mobile",
+    },
+    {
+      id: "api-gateway",
+      title: "Microservices API Gateway",
+      category: "backend",
+      image: "/apigateway.webp?height=300&width=400",
+      description:
+        "Scalable API gateway built with Spring Cloud for microservices architecture with advanced routing and security.",
+      tags: ["Spring Cloud", "Docker", "Kubernetes"],
+      features: [
+        "Dynamic routing and load balancing",
+        "Authentication and authorization",
+        "Rate limiting and throttling",
+        "Request/response transformation",
+        "Monitoring and logging",
+        "Circuit breaker pattern",
+      ],
+      technologies: ["Spring Cloud Gateway", "Docker", "Kubernetes", "Redis", "Prometheus", "Grafana"],
+      demoLink: "https://api-gateway-demo.herokuapp.com",
+      githubLink: "https://github.com/diwash02003/microservices-gateway",
+    },
+  ],
 }
 
-// Check for saved theme preference
-const savedTheme = localStorage.getItem('theme') ||
-  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-setTheme(savedTheme);
+// DOM Elements
+const navbar = document.getElementById("navbar")
+const navToggle = document.getElementById("nav-toggle")
+const navMenu = document.getElementById("nav-menu")
+const themeToggle = document.getElementById("theme-toggle")
+const projectsGrid = document.getElementById("projects-grid")
+const projectModal = document.getElementById("project-modal")
+const modalOverlay = document.getElementById("modal-overlay")
+const modalClose = document.getElementById("modal-close")
+const contactForm = document.getElementById("contact-form")
 
-// Theme toggle event listener
-themeToggleBtn.addEventListener('click', () => {
-  const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  setTheme(newTheme);
-});
+// Initialize the application
+document.addEventListener("DOMContentLoaded", () => {
+  initializeNavigation()
+  initializeProjects()
+  initializeContactForm()
+  initializeScrollEffects()
+  initializeAnimations()
+})
 
-// Mobile Menu Toggle
-menuToggle.addEventListener('click', () => {
-  navMobile.classList.toggle('active');
-  menuToggle.innerHTML = navMobile.classList.contains('active')
-    ? '<i class="fas fa-times"></i>'
-    : '<i class="fas fa-bars"></i>';
-});
+// Navigation Management
+function initializeNavigation() {
+  // Mobile menu toggle
+  navToggle.addEventListener("click", toggleMobileMenu)
 
-// Close mobile menu when clicking a link
-document.querySelectorAll('.nav-mobile .nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    navMobile.classList.remove('active');
-    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-  });
-});
+  // Close mobile menu when clicking on links
+  const navLinks = document.querySelectorAll(".nav-link")
+  navLinks.forEach((link) => {
+    link.addEventListener("click", closeMobileMenu)
+  })
 
-// Tabs functionality
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    // Remove active class from all tabs and contents
-    tabs.forEach(t => t.classList.remove('active'));
-    tabContents.forEach(content => content.classList.remove('active'));
-
-    // Add active class to clicked tab and corresponding content
-    tab.classList.add('active');
-    const tabId = tab.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
-  });
-});
-
-// Project filtering
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    // Remove active class from all filter buttons
-    filterBtns.forEach(b => b.classList.remove('active'));
-
-    // Add active class to clicked button
-    btn.classList.add('active');
-
-    const filter = btn.getAttribute('data-filter');
-
-    // Show/hide projects based on filter
-    projectCards.forEach(card => {
-      if (filter === 'all' || card.getAttribute('data-category') === filter) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetId = link.getAttribute('data-target');
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
-});
 
-// Project modal functionality
-projectCards.forEach(card => {
-  card.addEventListener('click', () => {
-    const title = card.querySelector('h3').textContent;
-    const description = card.querySelector('p').textContent;
-    const tags = card.querySelectorAll('.project-tag');
-    const badge = card.querySelector('.project-badge').textContent;
-    const imageSrc = card.querySelector('img').src; // Get the image source
+  // Close mobile menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+      closeMobileMenu()
+    }
+  })
 
-    // Set modal content
-    document.getElementById('modal-project-title').textContent = title;
-    document.getElementById('modal-project-description').textContent =
-      "Detailed description of " + title + ": " + description +
-      " This project showcases my skills in web development and problem-solving. " +
-      "It was developed using modern technologies and best practices to create a " +
-      "robust and user-friendly solution.";
+  // Smooth scrolling for navigation links
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault()
+      const targetId = link.getAttribute("href").substring(1)
+      const targetElement = document.getElementById(targetId)
 
-    const imageElement = document.getElementById('modal-project-image');
-    imageElement.src = imageSrc;
-    imageElement.alt = title;
-    // Clear and add tags
-    const tagsContainer = document.getElementById('modal-project-tags');
-    tagsContainer.innerHTML = '';
-    tags.forEach(tag => {
-      const tagSpan = document.createElement('span');
-      tagSpan.className = 'project-tag';
-      tagSpan.textContent = tag.textContent;
-      tagsContainer.appendChild(tagSpan);
-    });
+      if (targetElement) {
+        const offsetTop = targetElement.offsetTop - 80
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth",
+        })
+      }
+    })
+  })
 
-    // Show modal
-    projectModal.style.display = 'flex';
-  });
-});
+  // Update active navigation link on scroll
+  window.addEventListener("scroll", updateActiveNavLink)
+}
 
-// Close modal
-closeModalBtn.addEventListener('click', () => {
-  projectModal.style.display = 'none';
-});
+function toggleMobileMenu() {
+  navMenu.classList.toggle("active")
+  navToggle.classList.toggle("active")
 
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
-  if (e.target === projectModal) {
-    projectModal.style.display = 'none';
+  // Update ARIA attributes
+  const isOpen = navMenu.classList.contains("active")
+  navToggle.setAttribute("aria-expanded", isOpen)
+
+  // Animate hamburger menu
+  const spans = navToggle.querySelectorAll("span")
+  if (isOpen) {
+    spans[0].style.transform = "rotate(45deg) translate(5px, 5px)"
+    spans[1].style.opacity = "0"
+    spans[2].style.transform = "rotate(-45deg) translate(7px, -6px)"
+  } else {
+    spans[0].style.transform = "none"
+    spans[1].style.opacity = "1"
+    spans[2].style.transform = "none"
   }
-});
+}
 
-// Contact form submission
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+function closeMobileMenu() {
+  navMenu.classList.remove("active")
+  navToggle.classList.remove("active")
+  navToggle.setAttribute("aria-expanded", "false")
 
-  const formData = new FormData(contactForm);
-  const name = formData.get('name');
-  const email = formData.get('email');
-  const subject = formData.get('subject');
-  const message = formData.get('message');
+  // Reset hamburger menu
+  const spans = navToggle.querySelectorAll("span")
+  spans[0].style.transform = "none"
+  spans[1].style.opacity = "1"
+  spans[2].style.transform = "none"
+}
 
-  // Simulate form submission
-  const submitBtn = contactForm.querySelector('button[type="submit"]');
-  const originalBtnText = submitBtn.innerHTML;
+function updateActiveNavLink() {
+  const sections = document.querySelectorAll("section[id]")
+  const navLinks = document.querySelectorAll(".nav-link")
 
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-  submitBtn.disabled = true;
+  let currentSection = ""
 
-  setTimeout(() => {
-    // Reset form
-    contactForm.reset();
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop - 100
+    const sectionHeight = section.offsetHeight
+
+    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+      currentSection = section.getAttribute("id")
+    }
+  })
+
+  navLinks.forEach((link) => {
+    link.classList.remove("active")
+    if (link.getAttribute("href") === `#${currentSection}`) {
+      link.classList.add("active")
+    }
+  })
+}
+
+// Projects Management
+function initializeProjects() {
+  renderProjects()
+  initializeProjectFilters()
+}
+
+function renderProjects(filter = "all") {
+  const filteredProjects =
+    filter === "all" ? portfolioData.projects : portfolioData.projects.filter((project) => project.category === filter)
+
+  projectsGrid.innerHTML = ""
+
+  filteredProjects.forEach((project, index) => {
+    const projectCard = createProjectCard(project, index)
+    projectsGrid.appendChild(projectCard)
+  })
+
+  // Add click event listeners to project cards
+  const projectCards = document.querySelectorAll(".project-card")
+  projectCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const projectId = card.getAttribute("data-project-id")
+      openProjectModal(projectId)
+    })
+  })
+}
+
+function createProjectCard(project, index) {
+  const card = document.createElement("div")
+  card.className = "project-card fade-in-up"
+  card.setAttribute("data-project-id", project.id)
+  card.style.animationDelay = `${index * 0.1}s`
+
+  card.innerHTML = `
+        <div class="project-image">
+            <img src="${project.image}" alt="${project.title}" loading="lazy">
+            <span class="project-badge">${project.category}</span>
+        </div>
+        <div class="project-content">
+            <h3 class="project-title">${project.title}</h3>
+            <p class="project-description">${project.description}</p>
+            <div class="project-tags">
+                ${project.tags.map((tag) => `<span class="project-tag">${tag}</span>`).join("")}
+            </div>
+            <div class="project-actions">
+                <button class="btn btn-primary btn-sm">View Details</button>
+            </div>
+        </div>
+    `
+
+  return card
+}
+
+function initializeProjectFilters() {
+  const filterButtons = document.querySelectorAll(".filter-btn")
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Remove active class from all buttons
+      filterButtons.forEach((btn) => btn.classList.remove("active"))
+
+      // Add active class to clicked button
+      button.classList.add("active")
+
+      // Get filter value and render projects
+      const filter = button.getAttribute("data-filter")
+      renderProjects(filter)
+    })
+  })
+}
+
+function openProjectModal(projectId) {
+  const project = portfolioData.projects.find((p) => p.id === projectId)
+
+  if (!project) return
+
+  // Populate modal content
+  document.getElementById("modal-title").textContent = project.title
+  document.getElementById("modal-image").src = project.image
+  document.getElementById("modal-image").alt = project.title
+  document.getElementById("modal-description").textContent = project.description
+  document.getElementById("modal-demo-link").href = project.demoLink
+  document.getElementById("modal-github-link").href = project.githubLink
+
+  // Populate tags
+  const modalTags = document.getElementById("modal-tags")
+  modalTags.innerHTML = project.tags.map((tag) => `<span class="project-tag">${tag}</span>`).join("")
+
+  // Populate features
+  const modalFeatures = document.getElementById("modal-features-list")
+  modalFeatures.innerHTML = project.features.map((feature) => `<li>${feature}</li>`).join("")
+
+  // Populate technologies
+  const modalTechTags = document.getElementById("modal-tech-tags")
+  modalTechTags.innerHTML = project.technologies.map((tech) => `<span class="skill-tag">${tech}</span>`).join("")
+
+  // Show modal
+  projectModal.classList.add("active")
+  document.body.style.overflow = "hidden"
+
+  // Focus on close button for accessibility
+  setTimeout(() => modalClose.focus(), 100)
+}
+
+function closeProjectModal() {
+  projectModal.classList.remove("active")
+  document.body.style.overflow = ""
+}
+
+// Modal event listeners
+modalClose.addEventListener("click", closeProjectModal)
+modalOverlay.addEventListener("click", closeProjectModal)
+
+// Close modal with Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && projectModal.classList.contains("active")) {
+    closeProjectModal()
+  }
+})
+
+// Contact Form Management
+function initializeContactForm() {
+  contactForm.addEventListener("submit", handleContactFormSubmit)
+}
+
+async function handleContactFormSubmit(e) {
+  e.preventDefault()
+
+  const formData = new FormData(contactForm)
+  const data = Object.fromEntries(formData)
+
+  // Show loading state
+  const submitButton = contactForm.querySelector('button[type="submit"]')
+  const originalText = submitButton.innerHTML
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'
+  submitButton.disabled = true
+
+  try {
+    // Simulate form submission (replace with actual API call)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     // Show success message
-    submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-
-    // Reset button after 3 seconds
-    setTimeout(() => {
-      submitBtn.innerHTML = originalBtnText;
-      submitBtn.disabled = false;
-    }, 3000);
-  }, 1500);
-});
-
-// Create floating icons for hero section
-function createFloatingIcons() {
-  const icons = ['fas fa-graduation-cap', 'fas fa-book-open', 'fas fa-code'];
-  const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)'];
-
-  for (let i = 0; i < 15; i++) {
-    const icon = document.createElement('div');
-    icon.className = 'floating-icon';
-
-    const iconIndex = i % 3;
-    const size = Math.random() * 60 + 20;
-
-    icon.style.width = `${size}px`;
-    icon.style.height = `${size}px`;
-    icon.style.left = `${Math.random() * 100}%`;
-    icon.style.top = `${Math.random() * 100}%`;
-    icon.style.backgroundColor = colors[iconIndex];
-
-    const iconElement = document.createElement('i');
-    iconElement.className = icons[iconIndex];
-    iconElement.style.color = 'white';
-
-    icon.appendChild(iconElement);
-    floatingIconsContainer.appendChild(icon);
-
-    // Add animation with random duration
-    animateFloatingIcon(icon);
+    showNotification("Message sent successfully! I'll get back to you soon.", "success")
+    contactForm.reset()
+  } catch (error) {
+    // Show error message
+    showNotification("Failed to send message. Please try again.", "error")
+  } finally {
+    // Reset button state
+    submitButton.innerHTML = originalText
+    submitButton.disabled = false
   }
 }
 
-// Animate floating icons with slow movement
-function animateFloatingIcon(icon) {
-  const speed = 3 + Math.random() * 2; // Slower speed between 3-5 seconds
+function showNotification(message, type = "info") {
+  const notification = document.createElement("div")
+  notification.className = `notification notification-${type}`
+  notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === "success" ? "check-circle" : "exclamation-circle"}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="notification-close">
+            <i class="fas fa-times"></i>
+        </button>
+    `
 
-  // Initial position
-  const startX = parseFloat(icon.style.left);
-  const startY = parseFloat(icon.style.top);
+  // Add notification styles
+  notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === "success" ? "var(--accent)" : "var(--danger)"};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-lg);
+        z-index: var(--z-tooltip);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease-out;
+    `
 
-  // Random movement range (smaller for slower movement)
-  const rangeX = (Math.random() - 0.5) * 10;
-  const rangeY = (Math.random() - 0.5) * 10;
+  document.body.appendChild(notification)
 
-  let progress = 0;
-  let direction = 1;
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    notification.style.animation = "slideOutRight 0.3s ease-out"
+    setTimeout(() => notification.remove(), 300)
+  }, 5000)
 
-  function moveIcon() {
-    progress += 0.005 * direction;
-
-    if (progress >= 1) direction = -1;
-    if (progress <= 0) direction = 1;
-
-    const newX = startX + rangeX * progress;
-    const newY = startY + rangeY * progress;
-
-    icon.style.left = `${newX}%`;
-    icon.style.top = `${newY}%`;
-
-    requestAnimationFrame(moveIcon);
-  }
-
-  moveIcon();
+  // Manual close
+  notification.querySelector(".notification-close").addEventListener("click", () => {
+    notification.style.animation = "slideOutRight 0.3s ease-out"
+    setTimeout(() => notification.remove(), 300)
+  })
 }
 
-// Initialize AOS (Animate on Scroll)
-let AOS; // Declare AOS variable
+// Scroll Effects
+function initializeScrollEffects() {
+  // Navbar background on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add("scrolled")
+    } else {
+      navbar.classList.remove("scrolled")
+    }
+  })
 
-document.addEventListener('DOMContentLoaded', function () {
-  AOS = window.AOS; // Assign AOS from window object
-  AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: true,
-    mirror: false
-  });
+  // Parallax effect for hero background shapes
+  window.addEventListener("scroll", () => {
+    const scrolled = window.pageYOffset
+    const shapes = document.querySelectorAll(".bg-shape")
 
-  // Create floating icons
-  createFloatingIcons();
+    shapes.forEach((shape, index) => {
+      const speed = 0.5 + index * 0.1
+      shape.style.transform = `translateY(${scrolled * speed}px)`
+    })
+  })
+}
 
-  // Show skill details on hover
-  skillCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      const details = card.querySelector('.skill-details');
-      details.style.display = 'block';
-    });
+// Animations
+function initializeAnimations() {
+  // Intersection Observer for fade-in animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px",
+  }
 
-    card.addEventListener('mouseleave', () => {
-      const details = card.querySelector('.skill-details');
-      details.style.display = 'none';
-    });
-  });
-});
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate")
+      }
+    })
+  }, observerOptions)
+
+  // Observe elements for animation
+  const animatedElements = document.querySelectorAll(
+    ".fade-in-up, .section-header, .about-content, .experience-content, .contact-content",
+  )
+  animatedElements.forEach((el) => observer.observe(el))
+}
+
+// Utility Functions
+function debounce(func, wait) {
+  let timeout
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout)
+      func(...args)
+    }
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
+}
+
+function throttle(func, limit) {
+  let inThrottle
+  return function () {
+    const args = arguments
+
+    if (!inThrottle) {
+      func.apply(this, args)
+      inThrottle = true
+      setTimeout(() => (inThrottle = false), limit)
+    }
+  }
+}
+
+// Performance optimizations
+const debouncedResize = debounce(() => {
+  // Handle resize events
+  if (window.innerWidth >= 768) {
+    closeMobileMenu()
+  }
+}, 250)
+
+window.addEventListener("resize", debouncedResize)
+
+// Add CSS animations for notifications
+const notificationStyles = document.createElement("style")
+notificationStyles.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    .notification-content {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .notification-close {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: var(--radius);
+        transition: background-color 0.2s;
+    }
+    
+    .notification-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .navbar.scrolled {
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: var(--shadow);
+    }
+    
+    [data-theme="dark"] .navbar.scrolled {
+        background: rgba(15, 23, 42, 0.98);
+    }
+`
+
+document.head.appendChild(notificationStyles)
+
+// Error handling
+window.addEventListener("error", (e) => {
+  console.error("An error occurred:", e.error)
+})
+
+// Service Worker registration (for PWA capabilities)
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((registration) => {
+        console.log("SW registered: ", registration)
+      })
+      .catch((registrationError) => {
+        console.log("SW registration failed: ", registrationError)
+      })
+  })
+}
